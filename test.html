@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="iter.js"></script>
+		<script src="assert.js"></script>
+		
+	</head>
+	<body>
+		<script>
+			/*
+				where:where,
+				map:map,
+				concat:concat,
+				take:take,
+				
+				groupBy:groupBy,
+				sort:sort
+				
+				max:max,
+				min:min,
+				avg:avg,
+				sum:sum,
+				count:count,
+				stat:stat,
+				reduce:reduce,
+				
+				toArray:toArray,
+			*/
+			//example and test
+			
+			
+			
+			//data
+			var source=[1,2,3,4,5,6,7,8,9,10];
+			var person = [{first:'god',second:'pig',age:25,male:'m'},
+						{first:'wang',second:'er',age:26,male:'m'},
+						{first:'zhang',second:'san',age:18,male:'m'},
+						{first:'li',second:'si',age:19,male:'m'},
+						{first:'god',second:'dog',age:21,male:'m'},
+						{first:'god',second:'cat',age:22,male:'m'}];
+			
+			//-------- where ------
+			var arr = iter(source)
+						.where(function(v){return v%2==0})
+						.toArray();
+			zl.assertArr(arr,[2,4,6,8,10],'get odds from 1 to 10');
+			
+			var arr = iter(person)
+						.where(function(v){return v.first=='god'})
+						.toArray();
+			
+			zl.assertArr(arr,[person[0],person[4],person[5]],
+									'get persons whose first name is "god"');
+			
+			
+			//--------------- map ---------
+			//取下标大于等于4的数组成员，并
+			var arr = iter(source)
+						.where(function(v,i){return i>=4})//v表示数组中的值，i表示index
+						.map(function(v,i){return v+i})//where，还有[4]到[9] 6个元素，所以i从0-5
+						.toArray();
+			//[5,6,7,8,9,10] [0,1,2,3,4,5]
+			zl.assertArr(arr,[5,7,9,11,13,15],'map pass');
+			
+			var arr = iter(person)
+						.where(function(v){return v.age<20})
+						.map(function(v){return v.first+v.second
+										+',birth:'+(2014-v.age)})
+						.toArray();
+			zl.assertArr(arr,['zhangsan,birth:1996','lisi,birth:1995'],'map pass again')
+			
+			
+			//----concat----
+			var arr = iter(source)
+						.where(function(v){return v>7})
+						.concat(['a','b'],function(v1,v2){return v2+v1})//注意：v2+v1，如果不传入匿名函数，默认是v1+v2
+						.toArray();
+			//如果是v1+v2,那么8a,8b,9a,9b,10a,10b
+			zl.assertArr(arr,['a8','b8','a9','b9','a10','b10'],'concat pass');
+			
+			var arr = iter(source)
+						.where(function(v){return v>7})
+						.concat(['a','b'])//注意：v2+v1，如果不传入匿名函数，默认是v1+v2
+						.toArray();
+			//如果是v1+v2,那么8a,8b,9a,9b,10a,10b
+			zl.assertArr(arr,['8a','8b','9a','9b','10a','10b'],'concat pass');
+			
+			
+			//take
+			var arr = iter(source)
+						.take(5)
+						.toArray();
+			zl.assertArr(arr,[1,2,3,4,5],'take pass')
+			
+			//-----min,max,count,sum,avg-----
+			//stat 功能上相当于上面5个函数
+			var min = iter(source).min();
+			var max = iter(source).max();
+			var count = iter(source).count();
+			var sum = iter(source).sum();
+			var avg = iter(source).avg();
+			zl.assert(min==1
+						&&max==10
+						&&count==10
+						&&sum==55
+						&&avg==5.5,'scalar functions pass');
+			var stat = iter(source).stat();
+			zl.assert(stat.min==1
+						&&stat.max==10
+						&&stat.count==10
+						&&stat.sum==55
+						&&stat.avg==5.5,'stat function pass');
+			
+			
+			//sort
+			var src = [2,5,6,8,1,4,9,10,7,3];
+			var arr= iter(src)
+						.sort()
+						.map(function(v){return v*2})
+						.toArray();
+			zl.assertArr(arr,[2,4,6,8,10,12,14,16,18,20],'sort pass');
+			
+			var arr= iter(person)
+						.sort(function(v1,v2){return v1.age-v2.age})
+						.toArray();
+			zl.assert(arr[0].first=='zhang'&& arr[0].age==18
+						&& arr[1].first=='li'&&arr[1].age==19
+						&& arr[2].first=='god'&&arr[2].age==21
+						&& arr[3].first=='god'&&arr[3].age==22
+						&& arr[4].first=='god'&&arr[4].age==25
+						&& arr[5].first=='wang'&&arr[5].age==26,'sort pass');
+						
+			//----groupBy------
+			var books = [{'name':'js1','category':'js','price':10}
+						,{'name':'js2','category':'js','price':20}
+						,{'name':'js3','category':'js','price':30}
+						,{'name':'js4','category':'js','price':40}
+						,{'name':'node1','category':'node','price':50}
+						,{'name':'node2','category':'node','price':60}
+						,{'name':'node3','category':'node','price':70}
+						,{'name':'other1','category':'other','price':80}
+						,{'name':'other2','category':'other','price':90}]
+			
+			//按category分类，然后找出有3本book以上的分类
+			//groupBy后，序列的每一个元素变成{key:..,values:...}
+			//key为分类的主键，values为数组，里面是该分类的下的所有内容
+			var arr = iter(books)
+						.groupBy('category')
+						.where(function(v){return v.values.length>=3})
+						.toArray();
+			
+			var jsBook = arr[0];
+			var nodeBook = arr[1];
+			var jsV = jsBook.values;
+			var nodeV = nodeBook.values;
+			zl.assert(jsBook.key=='js'&& nodeBook.key=='node'
+						&&jsV.length==4&&nodeV.length==3
+						&&jsV[0].name=='js1'&&jsV[1].name=='js2'&&jsV[2].name=='js3'&&jsV[3].name=='js4'
+						&&nodeV[0].name=='node1'&&nodeV[1].name=='node2'&&nodeV[2].name=='node3',
+						'groupBy pass');
+			
+			
+		</script>
+	</body>
+</html>
