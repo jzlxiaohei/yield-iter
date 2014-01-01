@@ -13,7 +13,7 @@ a demo to show how to use new js keywork `yield` to write a iteration lib to man
 			.groupBy(..)
 2. use GeneratorFunction,for most cases just iterate Array once(see more details in API section)
 
-#File:
+##Files:
 just write some demo,so the dir structure is simple
 
 `iter.js` : lib for iteration
