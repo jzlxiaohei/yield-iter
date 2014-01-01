@@ -113,6 +113,8 @@ just write some demo,so the dir structure is simple
 						.toArray();
 			//arr:[{..age:18..} , ... , {..age:26}...]
 
+---
+
 `groupBy(f)` :{f:String|Function},如果是String，根据这个字符出去序列中索引对象的属性，作为Key，如果是Function,按照f的返回值作为Key。groupBy后，序列中的每一个对象将变成`{key:.. , values:[...]}`,groupBy后依然可以链式调用（见example),但是对象格式变化后，需要小心处理。
 
 			//person的定义见sort部分
