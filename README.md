@@ -75,6 +75,7 @@ just write some demo,so the dir structure is simple
 ---
 
 `map(f)` :{f:Function}。
+
 把序列中的每个值，通过f进行映射。下面的代码，取得偶数后，对其进行乘以2的处理，因此返回[4,8,12,16,20]
 			
 			var arr = iter(_1to10)
@@ -85,6 +86,7 @@ just write some demo,so the dir structure is simple
 ---
 
 `take(n)`:{n:num}。
+
 选取序列的前n个。
 			
 			var arr = iter(_1to10)
@@ -95,6 +97,7 @@ just write some demo,so the dir structure is simple
 ---
 
 `sort(f)`:{f:Function,可选}。
+
 sort会对原序列进行立即迭代，把排序之后的结果，作为新序列支持后续的链式调用
 			
 			var src = [2,5,6,8,1,4,9,10,7,3];
@@ -119,6 +122,7 @@ sort会对原序列进行立即迭代，把排序之后的结果，作为新序�
 ---
 
 `groupBy(f)` :{f:String|Function}。
+
 如果参数类型是String，根据这个字符出去序列中索引对象的属性，作为Key，如果是Function,按照f的返回值作为Key。groupBy后，序列中的每一个对象将变成`{key:.. , values:[...]}`,groupBy后依然可以链式调用（见example),但是对象格式变化后，需要小心处理。
 
 			//person的定义见sort部分
@@ -130,6 +134,7 @@ sort会对原序列进行立即迭代，把排序之后的结果，作为新序�
 ---
 			
 `max,min,sum,avg,count`:
+
 聚和函数，调用之后不能再进行链式调用
 			
 			iter(_1to10).sum();//55，功能上讲，还支持字符串的拼接
@@ -154,6 +159,7 @@ sort会对原序列进行立即迭代，把排序之后的结果，作为新序�
 ---
 
 `state` 
+
 针对number数组，功能相当于上面5个聚会函数之和，但是仅迭代一次
 		var obj = iter(_1to10).stat();
 		//obj : {min: 1, max: 10, sum: 55, avg: 5.5, count: 10} 
