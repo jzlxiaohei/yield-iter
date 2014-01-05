@@ -161,6 +161,7 @@ sort会对原序列进行立即迭代，把排序之后的结果，作为新序�
 `stat` 
 
 针对number数组，功能相当于上面5个聚会函数之和，但是仅迭代一次
+		
 		var obj = iter(_1to10).stat();
 		//obj : {min: 1, max: 10, sum: 55, avg: 5.5, count: 10} 
 
