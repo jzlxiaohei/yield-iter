@@ -58,12 +58,16 @@ just write some demo,so the dir structure is simple
 
 - 1.`where,map,take,concat`:这些函数可以进行任意的链式调用，而且不会对原序列进行求值，直到使用toArray方法
 - 2.`sort,groupBy`: 这些函数的用法同第一类一样，调用之后可以继续进行链式调用，但是调用这些方法会进行立即求值。从使用的角度，第一类很第二类没有区别
-- 3.`max,min,sum,avg,count,reduce,stat`,聚合函数，会把序列变成一个值返回，执行其中的任意方法都会接受调用链，并进行立即求值，其中avg主要针对元素是number数组，其他类型的结果可能会比较怪异，从效果上，出来数字sum支持字符串的拼接。
+- 3.`max,min,sum,avg,count,reduce,stat`,聚合函数，会把序列变成一个值返回，执行其中的任意方法都会结束调用链，并进行立即求值。其中avg主要针对元素是number数组，其他类型的结果可能会比较怪异；从效果上，sum还支持字符串的拼接。
 
 ---
-`iter(arr)` : {arr:Array}。 传入一个数组，该函数会对函数进行包装，返回一个GeneratorFunction(以下简称 **`GF`** ),此为入口函数，进行本lib时，应首先使用该函数。
+`iter(arr)` : {arr:Array}。 传入一个数组，该函数会对函数进行包装，返回一个GeneratorFunction(以下简称 **`GF`** ),此为入口函数，使用本lib时，应首先使用该函数。
+
+---
 
 `toArray()` : 对`GF`进行立即求值，返回相应数组，除聚合函数，此方法是唯一出口函数
+
+---
 	
 `where(f)` ： {f:Function，f应返回一个boolean值}。传入一个函数，用作过滤条件。下面的代码，将返回1到10中的偶数
 	
