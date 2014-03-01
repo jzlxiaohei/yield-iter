@@ -56,12 +56,16 @@ just write some demo,so the dir structure is simple
 
 - 1.`where,map,take,concat`:这些函数可以进行任意的链式调用，而且不会对原序列进行求值，直到使用toArray方法
 - 2.`sort,groupBy`: 这些函数的用法同第一类一样，调用之后可以继续进行链式调用，但是调用这些方法会进行立即求值。从使用的角度，第一类很第二类没有区别
-- 3.`max,min,sum,avg,count,reduce,stat`,聚合函数，会把序列变成一个值返回，执行其中的任意方法都会接受调用链，并进行立即求值，其中avg主要针对元素是number数组，其他类型的结果可能会比较怪异，从效果上，出来数字sum支持字符串的拼接。
+- 3.`max,min,sum,avg,count,reduce,stat`,聚合函数，会把序列变成一个值返回，执行其中的任意方法都会结束调用链，并进行立即求值。其中avg主要针对元素是number数组，其他类型的结果可能会比较怪异；从效果上，sum还支持字符串的拼接。
 
 ---
-`iter(arr)` : {arr:Array}。 传入一个数组，该函数会对函数进行包装，返回一个GeneratorFunction(以下简称 **`GF`** ),此为入口函数，进行本lib时，应首先使用该函数。
+`iter(arr)` : {arr:Array}。 传入一个数组，该函数会对函数进行包装，返回一个GeneratorFunction(以下简称 **`GF`** ),此为入口函数，使用本lib时，应首先使用该函数。
+
+---
 
 `toArray()` : 对`GF`进行立即求值，返回相应数组，除聚合函数，此方法是唯一出口函数
+
+---
 	
 `where(f)` ： {f:Function，f应返回一个boolean值}。传入一个函数，用作过滤条件。下面的代码，将返回1到10中的偶数
 	
@@ -72,7 +76,9 @@ just write some demo,so the dir structure is simple
 
 ---
 
-`map(f)` :{f:Function}。把序列中的每个值，通过f进行映射。下面的代码，取得偶数后，对其进行乘以2的处理，因此返回[4,8,12,16,20]
+`map(f)` :{f:Function}。
+
+把序列中的每个值，通过f进行映射。下面的代码，取得偶数后，对其进行乘以2的处理，因此返回[4,8,12,16,20]
 			
 			var arr = iter(_1to10)
 						.where(function(v){return v%2==0})
@@ -81,7 +87,9 @@ just write some demo,so the dir structure is simple
 
 ---
 
-`take(n)`:{n:num}。选取序列的前n个。
+`take(n)`:{n:num}。
+
+选取序列的前n个。
 			
 			var arr = iter(_1to10)
 						.take(5)
@@ -90,7 +98,9 @@ just write some demo,so the dir structure is simple
 
 ---
 
-`sort(f)`:{f:Function,可选}。sort会对原序列进行立即迭代，把排序之后的结果，作为新序列支持后续的链式调用
+`sort(f)`:{f:Function,可选}。
+
+sort会对原序列进行立即迭代，把排序之后的结果，作为新序列支持后续的链式调用
 			
 			var src = [2,5,6,8,1,4,9,10,7,3];
 			var arr= iter(src)
@@ -111,7 +121,11 @@ just write some demo,so the dir structure is simple
 						.toArray();
 			//arr:[{..age:18..} , ... , {..age:26}...]
 
-`groupBy(f)` :{f:String|Function},如果是String，根据这个字符出去序列中索引对象的属性，作为Key，如果是Function,按照f的返回值作为Key。groupBy后，序列中的每一个对象将变成`{key:.. , values:[...]}`,groupBy后依然可以链式调用（见example),但是对象格式变化后，需要小心处理。
+---
+
+`groupBy(f)` :{f:String|Function}。
+
+如果参数类型是String，根据这个字符出去序列中索引对象的属性，作为Key，如果是Function,按照f的返回值作为Key。groupBy后，序列中的每一个对象将变成`{key:.. , values:[...]}`,groupBy后依然可以链式调用（见example),但是对象格式变化后，需要小心处理。
 
 			//person的定义见sort部分
 			//下面的函数,使用first和second的组合做为Key，这样会有序列中会有5个对象，其中key：'god pig' 下的values数组有2个元素，其他都只有一个元素
@@ -121,13 +135,15 @@ just write some demo,so the dir structure is simple
 
 ---
 			
-`max,min,sum,avg,count`:聚和函数，调用之后不能再进行链式调用
+`max,min,sum,avg,count`:
+
+聚和函数，调用之后不能再进行链式调用
 			
 			iter(_1to10).sum();//55，功能上讲，还支持字符串的拼接
-			iter(_1to10).avg();//1，应该针对数组元素为number的情况进行调用
+			iter(_1to10).avg();//5.5，应该针对数组元素为number的情况进行调用
 			iter(_1to10).min();//1
 			iter(_1to10).max();//10
-			iter(_1to10).count();//1
+			iter(_1to10).count();//10
 
  	其中，min和max还可以接受一个函数，用于自定义大小规则
 			//谁年龄小返回谁			
@@ -144,7 +160,10 @@ just write some demo,so the dir structure is simple
 
 ---
 
-`state` 针对number数组，功能相当于上面5个聚会函数之和，但是仅迭代一次
+`stat` 
+
+针对number数组，功能相当于上面5个聚会函数之和，但是仅迭代一次
+		
 		var obj = iter(_1to10).stat();
 		//obj : {min: 1, max: 10, sum: 55, avg: 5.5, count: 10} 
 

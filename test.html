@@ -58,11 +58,11 @@
 			//--------------- map ---------
 			//取下标大于等于4的数组成员，并
 			var arr = iter(source)
-						.where(function(v,i){return i>=4})//v表示数组中的值，i表示index
-						.map(function(v,i){return v+i})//where，还有[4]到[9] 6个元素，所以i从0-5
+						.where(function(v){return v>4})//v表示数组中的值，i表示index
+						.map(function(v){return v*2})//where，还有[4]到[9] 6个元素，所以i从0-5
 						.toArray();
 			//[5,6,7,8,9,10] [0,1,2,3,4,5]
-			zl.assertArr(arr,[5,7,9,11,13,15],'map pass');
+			zl.assertArr(arr,[10,12,14,16,18,20],'map pass');
 			
 			var arr = iter(person)
 						.where(function(v){return v.age<20})
@@ -75,17 +75,10 @@
 			//----concat----
 			var arr = iter(source)
 						.where(function(v){return v>7})
-						.concat(['a','b'],function(v1,v2){return v2+v1})//注意：v2+v1，如果不传入匿名函数，默认是v1+v2
-						.toArray();
-			//如果是v1+v2,那么8a,8b,9a,9b,10a,10b
-			zl.assertArr(arr,['a8','b8','a9','b9','a10','b10'],'concat pass');
-			
-			var arr = iter(source)
-						.where(function(v){return v>7})
 						.concat(['a','b'])//注意：v2+v1，如果不传入匿名函数，默认是v1+v2
 						.toArray();
-			//如果是v1+v2,那么8a,8b,9a,9b,10a,10b
-			zl.assertArr(arr,['8a','8b','9a','9b','10a','10b'],'concat pass');
+			zl.assertArr(arr,[8,9,10,'a','b'],'concat pass');
+			
 			
 			
 			//take
