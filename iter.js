@@ -38,14 +38,13 @@
 	
 	
 	function* mapImpl(gen,f){
-			//var index = 0;
-			var index = 0, _g,done,value;
-			while(true){
-				_g =gen.next();
-				if(_g.done) break;
-				yield f(_g.value,index++);
-			}
+		var _g;
+		while(true){
+			_g =gen.next();
+			if(_g.done) break;
+			yield f(_g.value);
 		}
+	}
 		
 	/*
 	 * map (T,index) -> U
@@ -87,9 +86,10 @@
 		while(true){
 			_g = gen.next();			
 			if(_g.done) break;
-			for(var i=0;i<otherArr.length;i++){
-				yield f(_g.value,otherArr[i]);
-			}
+			yield _g.value;
+		}
+		for(var i=0;i<otherArr.length;i++){
+			yield otherArr[i];
 		}
 	}
 	

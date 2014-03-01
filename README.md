@@ -13,6 +13,7 @@ a demo to show how to use new js keywork `yield` to write a iteration lib to man
 			.groupBy(..)
 2. use GeneratorFunction,for most cases just iterate Array once(see more details in API section)
 
+3. when the lambda expression is supported(it is soon),the code will be more brief
 ##Files:
 just write some demo,so the dir structure is simple
 
@@ -37,16 +38,13 @@ just write some demo,so the dir structure is simple
 					,{'name':'other2','category':'other','price':90}]
 
 	//group by category,then find which ones contains more than 3(included) books
-	//after call groupBy，the data in the seq becomes {key:..,values:...}
-	//values is an array ，contains all data belongs to its category
- 
 	var arr = iter(books)
 				.groupBy('category')
 				.where(function(v){return v.values.length>=3})
 				.toArray();
 
 	/*arr=[ {key:'js' , values:[{name:'js1'.....}, ...] }
-				 {key:'node' , values:[{name:'node1'.....},...]
+			{key:'node' , values:[{name:'node1'.....},... ]
 	]*/
 
 
