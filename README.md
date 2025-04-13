@@ -1,4 +1,4 @@
-#yield iteration
+# yield iteration
 a demo to show how to use new js keywork `yield` to write a iteration lib to manipulate colloection (array).Your env should support ES6(harmony).
 
 ---
@@ -14,7 +14,7 @@ a demo to show how to use new js keywork `yield` to write a iteration lib to man
 2. use GeneratorFunction,for most cases just iterate Array once(see more details in API section)
 
 3. when the lambda expression is supported(it is soon),the code will be more brief
-##Files:
+## Files:
 just write some demo,so the dir structure is simple
 
 `iter.js` : lib for iteration
@@ -24,7 +24,7 @@ just write some demo,so the dir structure is simple
 `test.html` some test/example for the lib, pls read the source code.If your browser supports ES6(harmony),just open this file,to see test result
 	
 
-##example:
+## example:
 
 
 	var books = [{'name':'js1','category':'js','price':10}
@@ -50,7 +50,7 @@ just write some demo,so the dir structure is simple
 
 
 
-##API
+## API
 
 函数主要分为三大类：
 
